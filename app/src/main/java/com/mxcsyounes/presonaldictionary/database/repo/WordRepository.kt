@@ -1,8 +1,9 @@
-package com.mxcsyounes.presonaldictionary.database
+package com.mxcsyounes.presonaldictionary.database.repo
 
 import android.app.Application
 import android.arch.lifecycle.LiveData
 import android.support.annotation.IntDef
+import com.mxcsyounes.presonaldictionary.database.WordDatabase
 import com.mxcsyounes.presonaldictionary.database.dao.WordDao
 import com.mxcsyounes.presonaldictionary.database.entities.Word
 import java.util.concurrent.ExecutorService
