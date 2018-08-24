@@ -3,11 +3,14 @@ package com.mxcsyounes.presonaldictionary.database
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
+import android.arch.persistence.room.TypeConverters
 import android.content.Context
+import com.mxcsyounes.presonaldictionary.database.converters.DateConverter
 import com.mxcsyounes.presonaldictionary.database.dao.WordDao
 import com.mxcsyounes.presonaldictionary.database.entities.Word
 
 @Database(entities = [Word::class], version = 1, exportSchema = false)
+@TypeConverters(DateConverter::class)
 abstract class WordDatabase : RoomDatabase() {
 
     companion object {
