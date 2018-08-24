@@ -1,15 +1,13 @@
-package com.mxcsyounes.presonaldictionary
+package com.mxcsyounes.presonaldictionary.ui
 
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import com.mxcsyounes.presonaldictionary.database.entities.Word
+import com.mxcsyounes.presonaldictionary.R
 import com.mxcsyounes.presonaldictionary.viewModel.WordViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         mWordViewModel?.words?.observe(this, android.arch.lifecycle.Observer {
         })
 
-        fab.setOnClickListener {
+        addWordFab.setOnClickListener {
 
         }
     }
