@@ -13,12 +13,10 @@ import android.view.MenuItem
 import android.view.View
 import com.mxcsyounes.presonaldictionary.R
 import com.mxcsyounes.presonaldictionary.database.entities.Word
-import com.mxcsyounes.presonaldictionary.ui.EditActivity.Companion.ACTION_EDIT
+import com.mxcsyounes.presonaldictionary.ui.EditActivity.Companion.ACTION_DETAIL
 import com.mxcsyounes.presonaldictionary.ui.EditActivity.Companion.ACTION_NEW
-import com.mxcsyounes.presonaldictionary.ui.EditActivity.Companion.DELETE
 import com.mxcsyounes.presonaldictionary.ui.EditActivity.Companion.KEY_ACTION
 import com.mxcsyounes.presonaldictionary.ui.EditActivity.Companion.KEY_DATA
-import com.mxcsyounes.presonaldictionary.ui.EditActivity.Companion.UPDATE
 import com.mxcsyounes.presonaldictionary.viewModel.WordViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -79,7 +77,7 @@ class MainActivity : AppCompatActivity(), WordAdapter.OnWordItemsClickListener {
 
     override fun onWordItemClickListener(word: Word) {
         val intent = Intent(this, EditActivity::class.java)
-        intent.putExtra(KEY_ACTION, ACTION_EDIT)
+        intent.putExtra(KEY_ACTION, ACTION_DETAIL)
         intent.putExtra(KEY_DATA, word)
         startActivityForResult(intent, REQUEST_DETAIL_WORD)
     }
@@ -97,18 +95,12 @@ class MainActivity : AppCompatActivity(), WordAdapter.OnWordItemsClickListener {
             REQUEST_DETAIL_WORD -> {
                 if (resultCode == Activity.RESULT_OK) {
                     val word = data?.getParcelableExtra<Word>(KEY_DATA)
-                    when (data?.getIntExtra(KEY_ACTION, 0)) {
-                        UPDATE -> {
-                            mWordViewModel?.updateWord(word!!)
-                        }
-                        DELETE -> {
-                            mWordViewModel?.deleteWord(word!!)
-                        }
-                    }
-
+                    mWordViewModel?.deleteWord(word!!)
                 }
-            }
 
+            }
         }
+
     }
 }
+

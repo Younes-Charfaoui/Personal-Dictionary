@@ -14,23 +14,26 @@ import java.util.*
 data class Word(@PrimaryKey(autoGenerate = true) var id: Int?,
                 @TypeConverters(DateConverter::class) var date: Date?,
                 @ColumnInfo(index = true) var word: String,
-                var definition: String) : Parcelable {
+                var definition: String,
+                var paths: String?) : Parcelable {
 
 
     constructor(parcel: Parcel) : this(
             parcel.readValue(Int::class.java.classLoader) as? Int,
             Date(parcel.readLong()),
             parcel.readString(),
+            parcel.readString(),
             parcel.readString())
 
 
-    constructor() : this(null, null, "", "")
+    constructor() : this(null, null, "", "" , "")
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeValue(id)
         parcel.writeLong(date!!.time)
         parcel.writeString(word)
         parcel.writeString(definition)
+        parcel.writeString(paths)
     }
 
     override fun describeContents(): Int {

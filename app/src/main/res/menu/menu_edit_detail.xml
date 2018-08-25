@@ -8,10 +8,10 @@
         android:orderInCategory="102"
         android:title="@string/delete_menu_item"
         app:showAsAction="ifRoom" />
-    <item
+  <!--  <item
         android:id="@+id/editMenuItem"
         android:icon="@drawable/ic_mode_edit_white_24dp"
         android:orderInCategory="101"
         android:title="@string/edit_menu_item"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom" />-->
 </menu>

@@ -4,12 +4,13 @@
     <string name="empty_screen_title">No words for the moment.</string>
     <string name="empty_screen_message">Get started by adding a word.</string>
     <string name="title_activity_edit">Edit Activity</string>
-    <string name="definition">Definition…</string>
-    <string name="word">Word…</string>
+    <string name="definition">Definition</string>
+    <string name="word">Word</string>
     <string name="done_menu_item">Done</string>
     <string name="delete_menu_item">Delete</string>
     <string name="edit_menu_item">Edit</string>
     <string name="word_empty_text_message">Word must have a value.</string>
     <string name="definition_empty_text_message">Definition must have a value.</string>
     <string name="empty_image_content_description">Empty image of books</string>
+    <string name="photo">Photo</string>
 </resources>

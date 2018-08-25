@@ -15,36 +15,78 @@
         android:layout_height="wrap_content"
         android:padding="24dp">
 
-        <EditText
-            android:id="@+id/wordEditTv"
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/wordInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/wordEditTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif-medium"
+                android:hint="@string/word"
+                android:inputType="text"
+                android:textSize="18sp"
+                tools:text="Hello world" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/definitionInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="@null"
-            android:fontFamily="sans-serif-medium"
-            android:hint="@string/word"
-            android:inputType="text"
-            android:textSize="22sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/wordInput">
 
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/definitionEditTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:gravity="top"
+                android:hint="@string/definition"
+                android:inputType="textMultiLine"
+                android:textSize="18sp"
+                tools:text="its a world bu the compunité" />
+        </android.support.design.widget.TextInputLayout>
 
-        <EditText
-            android:id="@+id/definitionEditTv"
+        <TextView
+            android:id="@+id/photoTitleTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/photo"
+            android:textColor="@color/colorAccent"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/definitionInput" />
+
+        <LinearLayout
+            android:id="@+id/photoLayout"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/photoTitleTv" />
+
+        <Button
+            android:id="@+id/addPhotoButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:background="@null"
-            android:hint="@string/definition"
-            android:inputType="text"
-            android:textSize="18sp"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/colorAccent"
+            android:text="Add Photo"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/wordEditTv" />
+            app:layout_constraintTop_toBottomOf="@+id/definitionInput" />
     </android.support.constraint.ConstraintLayout>
 </ScrollView>
