@@ -29,6 +29,10 @@ class WordAdapter(context: Context, onWordItemsClickListener: OnWordItemsClickLi
         holder.definitionTv.text = word?.definition
     }
 
+    fun swapWordList(words: MutableList<Word>?) {
+        this.wordList = words
+        notifyDataSetChanged()
+    }
 
     inner class WordViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val wordTv: TextView = view.wordTv

@@ -1,4 +1,7 @@
 <resources>
-    <string name="app_name">Presonal Dictionary</string>
+    <string name="app_name">Personal Dictionary</string>
     <string name="action_settings">Settings</string>
+    <string name="empty_screen_title">No words for the moment.</string>
+    <string name="empty_screen_message">Get started by adding a word.</string>
+    <string name="title_activity_edit">Edit Activity</string>
 </resources>

@@ -88,9 +88,10 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_add_white_24dp" />
-                            <entry key="sourceFile" value="C:\Users\Charfaoui PC" />
+                            <entry key="outputName" value="ic_books" />
+                            <entry key="sourceFile" value="C:\Users\Charfaoui PC\Desktop\Books.svg" />
                           </map>
                         </option>
                       </PersistentState>
