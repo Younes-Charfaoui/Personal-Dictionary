@@ -1,5 +1,6 @@
 package com.mxcsyounes.presonaldictionary.ui
 
+import android.app.Activity
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
@@ -23,6 +24,11 @@ class MainActivity : AppCompatActivity(), WordAdapter.OnWordItemsClickListener {
 
 
     private var mWordViewModel: WordViewModel? = null
+
+    companion object {
+        const val REQUEST_NEW_WORD = 1224
+        const val REQUEST_DETAIL_WORD = 1225
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +55,7 @@ class MainActivity : AppCompatActivity(), WordAdapter.OnWordItemsClickListener {
         addWordFab.setOnClickListener {
             val intent = Intent(this, EditActivity::class.java)
             intent.putExtra(KEY_ACTION, ACTION_NEW)
-            startActivity(intent)
+            startActivityForResult(intent, REQUEST_NEW_WORD)
         }
     }
 
@@ -72,5 +78,24 @@ class MainActivity : AppCompatActivity(), WordAdapter.OnWordItemsClickListener {
         intent.putExtra(KEY_ACTION, ACTION_EDIT)
         intent.putExtra(KEY_DATA, word)
         startActivity(intent)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        when (requestCode) {
+            REQUEST_NEW_WORD -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    val word = data?.getParcelableExtra<Word>(KEY_DATA)
+                    mWordViewModel?.insertWord(word!!)
+                }
+            }
+            REQUEST_DETAIL_WORD -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    val word = data?.getParcelableExtra<Word>(KEY_DATA)
+                    mWordViewModel?.updateWord(word!!)
+                }
+            }
+
+        }
     }
 }
