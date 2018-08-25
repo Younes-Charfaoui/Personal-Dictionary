@@ -11,4 +11,5 @@
     <string name="edit_menu_item">Edit</string>
     <string name="word_empty_text_message">Word must have a value.</string>
     <string name="definition_empty_text_message">Definition must have a value.</string>
+    <string name="empty_image_content_description">Empty image of books</string>
 </resources>

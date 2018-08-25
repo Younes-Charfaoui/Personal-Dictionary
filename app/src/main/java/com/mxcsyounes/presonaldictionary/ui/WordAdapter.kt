@@ -2,6 +2,7 @@ package com.mxcsyounes.presonaldictionary.ui
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,10 @@ import com.mxcsyounes.presonaldictionary.database.entities.Word
 import kotlinx.android.synthetic.main.word_list_item.view.*
 
 class WordAdapter(context: Context, onWordItemsClickListener: OnWordItemsClickListener) : RecyclerView.Adapter<WordAdapter.WordViewHolder>() {
+
+    companion object {
+        const val TAG = "WordAdapter"
+    }
 
     var wordList: MutableList<Word>? = null
     private val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -25,6 +30,7 @@ class WordAdapter(context: Context, onWordItemsClickListener: OnWordItemsClickLi
 
     override fun onBindViewHolder(holder: WordViewHolder, position: Int) {
         val word = wordList?.get(position)
+        Log.d(TAG, "the word is ${word?.toString()}")
         holder.wordTv.text = word?.word
         holder.definitionTv.text = word?.definition
     }

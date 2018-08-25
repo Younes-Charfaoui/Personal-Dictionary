@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.LinearLayoutManager.VERTICAL
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -14,20 +15,23 @@ import com.mxcsyounes.presonaldictionary.R
 import com.mxcsyounes.presonaldictionary.database.entities.Word
 import com.mxcsyounes.presonaldictionary.ui.EditActivity.Companion.ACTION_EDIT
 import com.mxcsyounes.presonaldictionary.ui.EditActivity.Companion.ACTION_NEW
+import com.mxcsyounes.presonaldictionary.ui.EditActivity.Companion.DELETE
 import com.mxcsyounes.presonaldictionary.ui.EditActivity.Companion.KEY_ACTION
 import com.mxcsyounes.presonaldictionary.ui.EditActivity.Companion.KEY_DATA
+import com.mxcsyounes.presonaldictionary.ui.EditActivity.Companion.UPDATE
 import com.mxcsyounes.presonaldictionary.viewModel.WordViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity(), WordAdapter.OnWordItemsClickListener {
 
-
     private var mWordViewModel: WordViewModel? = null
 
     companion object {
         const val REQUEST_NEW_WORD = 1224
         const val REQUEST_DETAIL_WORD = 1225
+        const val TAG = "MainActivity"
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,7 +81,7 @@ class MainActivity : AppCompatActivity(), WordAdapter.OnWordItemsClickListener {
         val intent = Intent(this, EditActivity::class.java)
         intent.putExtra(KEY_ACTION, ACTION_EDIT)
         intent.putExtra(KEY_DATA, word)
-        startActivity(intent)
+        startActivityForResult(intent, REQUEST_DETAIL_WORD)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -86,13 +90,22 @@ class MainActivity : AppCompatActivity(), WordAdapter.OnWordItemsClickListener {
             REQUEST_NEW_WORD -> {
                 if (resultCode == Activity.RESULT_OK) {
                     val word = data?.getParcelableExtra<Word>(KEY_DATA)
+                    Log.d(TAG, "the word is ${word?.toString()}")
                     mWordViewModel?.insertWord(word!!)
                 }
             }
             REQUEST_DETAIL_WORD -> {
                 if (resultCode == Activity.RESULT_OK) {
                     val word = data?.getParcelableExtra<Word>(KEY_DATA)
-                    mWordViewModel?.updateWord(word!!)
+                    when (data?.getIntExtra(KEY_ACTION, 0)) {
+                        UPDATE -> {
+                            mWordViewModel?.updateWord(word!!)
+                        }
+                        DELETE -> {
+                            mWordViewModel?.deleteWord(word!!)
+                        }
+                    }
+
                 }
             }
 

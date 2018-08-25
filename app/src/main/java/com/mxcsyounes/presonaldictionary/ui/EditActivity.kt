@@ -4,7 +4,10 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v4.content.ContextCompat
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.mxcsyounes.presonaldictionary.R
@@ -14,6 +17,8 @@ import kotlinx.android.synthetic.main.content_edit.*
 import java.util.*
 
 class EditActivity : AppCompatActivity() {
+
+    private var stateEdit = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +34,9 @@ class EditActivity : AppCompatActivity() {
                 wordEditTv.isEnabled = false
                 definitionEditTv.isEnabled = false
             }
+            ACTION_NEW -> {
+
+            }
             else -> finish()
         }
     }
@@ -38,9 +46,12 @@ class EditActivity : AppCompatActivity() {
         const val KEY_DATA = "data"
         const val ACTION_EDIT = 11
         const val ACTION_NEW = 12
+        const val DELETE = 114
+        const val TAG = "EditActivity"
+        const val UPDATE = 112
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean = when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem?) = when (item?.itemId) {
         android.R.id.home -> {
             onBackPressed()
             true
@@ -50,7 +61,9 @@ class EditActivity : AppCompatActivity() {
                 val word = wordEditTv.text.toString().trim()
                 val definition = definitionEditTv.text.toString().trim()
                 val intentBack = Intent()
-                intentBack.putExtra(KEY_DATA, Word(null, Date(), word, definition))
+                val wordObject = Word(null, Date(), word, definition)
+                Log.d(TAG, "the word is $wordObject")
+                intentBack.putExtra(KEY_DATA, wordObject)
                 setResult(Activity.RESULT_OK, intentBack)
                 finish()
             }
@@ -58,16 +71,53 @@ class EditActivity : AppCompatActivity() {
         }
 
         R.id.editMenuItem -> {
-            wordEditTv.isEnabled = true
-            definitionEditTv.isEnabled = true
+            if (stateEdit) {
+                item.icon = ContextCompat.getDrawable(this, R.drawable.ic_done_white_24dp)
+                stateEdit = false
+                wordEditTv.isEnabled = true
+                definitionEditTv.isEnabled = true
+            } else {
+                if (validate()) {
+                    AlertDialog.Builder(this)
+                            .setTitle("Are you sure?")
+                            .setMessage("Keep changes an update word.")
+                            .setPositiveButton("Yes", { _, _ ->
+                                val word = wordEditTv.text.toString().trim()
+                                val definition = definitionEditTv.text.toString().trim()
+                                val wordU = intent.getParcelableExtra<Word>(KEY_DATA)
+                                wordU.word = word
+                                wordU.definition = definition
+                                wordU.date = Date()
+                                val intentBack = Intent()
+                                intentBack.putExtra(KEY_ACTION, UPDATE)
+                                intentBack.putExtra(KEY_DATA, wordU)
+                                setResult(Activity.RESULT_OK, intentBack)
+                                finish()
+                            })
+                            .setNegativeButton("Cancel", null)
+                            .show()
+                }
+            }
 
             true
         }
 
         R.id.deleteMenuItem -> {
-
+            AlertDialog.Builder(this)
+                    .setTitle("Are you sure?")
+                    .setMessage("Delete this word for ever.")
+                    .setPositiveButton("Yes", { _, _ ->
+                        val intentBack = Intent()
+                        intentBack.putExtra(KEY_ACTION, DELETE)
+                        intentBack.putExtra(KEY_DATA, intent.getParcelableExtra<Word>(KEY_DATA))
+                        setResult(Activity.RESULT_OK, intentBack)
+                        finish()
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show()
             true
         }
+
         else -> false
     }
 

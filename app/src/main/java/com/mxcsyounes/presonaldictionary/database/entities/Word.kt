@@ -9,11 +9,13 @@ import android.os.Parcelable
 import com.mxcsyounes.presonaldictionary.database.converters.DateConverter
 import java.util.*
 
+
 @Entity(tableName = "words")
-data class Word(@PrimaryKey(autoGenerate = false) var id: Int?,
+data class Word(@PrimaryKey(autoGenerate = true) var id: Int?,
                 @TypeConverters(DateConverter::class) var date: Date?,
                 @ColumnInfo(index = true) var word: String,
                 var definition: String) : Parcelable {
+
 
     constructor(parcel: Parcel) : this(
             parcel.readValue(Int::class.java.classLoader) as? Int,
@@ -21,13 +23,14 @@ data class Word(@PrimaryKey(autoGenerate = false) var id: Int?,
             parcel.readString(),
             parcel.readString())
 
+
     constructor() : this(null, null, "", "")
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeValue(id)
+        parcel.writeLong(date!!.time)
         parcel.writeString(word)
         parcel.writeString(definition)
-        parcel.writeLong(date!!.time)
     }
 
     override fun describeContents(): Int {
@@ -43,4 +46,6 @@ data class Word(@PrimaryKey(autoGenerate = false) var id: Int?,
             return arrayOfNulls(size)
         }
     }
+
+
 }
