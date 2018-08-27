@@ -29,6 +29,7 @@ class EditActivity : AppCompatActivity() {
 
     private var statePhoto = true
     private var selectedImages = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
@@ -101,16 +102,24 @@ class EditActivity : AppCompatActivity() {
         const val ACTION_DETAIL = 11
         const val ACTION_NEW = 12
         const val DELETE = 114
-        const val TAG = "EditActivity"
         const val UPDATE = 112
+        const val TAG = "EditActivity"
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem?) = when (item?.itemId) {
         android.R.id.home -> {
+            val word = intent.getParcelableExtra<Word>(KEY_DATA)
+//            if (selectedImages.isNotEmpty()) {
+//                word?.paths += selectedImages
+//            }
+            val intentBack = Intent()
+            intentBack.putExtra(KEY_ACTION, UPDATE)
+            intentBack.putExtra(KEY_DATA, word)
+            setResult(Activity.RESULT_OK, intentBack)
             onBackPressed()
             true
         }
+
         R.id.doneMenuItem -> {
             if (validate()) {
                 val word = wordEditTv.text.toString().trim()
@@ -194,17 +203,7 @@ class EditActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_PHOTO && resultCode == Activity.RESULT_OK) {
             val image = data?.data
-
-            when (intent.getIntExtra(KEY_ACTION, 0)) {
-
-                ACTION_NEW -> {
-                    selectedImages += "${image.toString()};"
-                }
-                ACTION_DETAIL -> {
-                    selectedImages += "${image.toString()};"
-                }
-            }
-
+            selectedImages += "${image.toString()};"
         }
         super.onActivityResult(requestCode, resultCode, data)
     }

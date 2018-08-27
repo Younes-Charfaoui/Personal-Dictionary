@@ -18,8 +18,10 @@ import com.mxcsyounes.presonaldictionary.database.repo.WORDS_ALPHA_DESC
 import com.mxcsyounes.presonaldictionary.database.repo.WORDS_DESC
 import com.mxcsyounes.presonaldictionary.ui.EditActivity.Companion.ACTION_DETAIL
 import com.mxcsyounes.presonaldictionary.ui.EditActivity.Companion.ACTION_NEW
+import com.mxcsyounes.presonaldictionary.ui.EditActivity.Companion.DELETE
 import com.mxcsyounes.presonaldictionary.ui.EditActivity.Companion.KEY_ACTION
 import com.mxcsyounes.presonaldictionary.ui.EditActivity.Companion.KEY_DATA
+import com.mxcsyounes.presonaldictionary.ui.EditActivity.Companion.UPDATE
 import com.mxcsyounes.presonaldictionary.viewModel.WordViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -104,15 +106,16 @@ class MainActivity : AppCompatActivity(), WordAdapter.OnWordItemsClickListener {
             REQUEST_NEW_WORD -> {
                 if (resultCode == Activity.RESULT_OK) {
                     val word = data?.getParcelableExtra<Word>(KEY_DATA)
-                    Log.d(TAG, "the word is ${word?.toString()}")
                     mWordViewModel?.insertWord(word!!)
                 }
             }
             REQUEST_DETAIL_WORD -> {
                 if (resultCode == Activity.RESULT_OK) {
-
                     val word = data?.getParcelableExtra<Word>(KEY_DATA)
-                    mWordViewModel?.deleteWord(word!!)
+                    when(data?.getIntExtra(KEY_ACTION,0)){
+                        DELETE -> mWordViewModel?.deleteWord(word!!)
+                        UPDATE -> mWordViewModel?.updateWord(word!!)
+                    }
                 }
 
             }
