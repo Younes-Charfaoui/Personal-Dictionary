@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
@@ -65,11 +64,15 @@ class EditActivity : AppCompatActivity() {
                         if (file.exists()) Log.d(TAG, "The file exits")
                         else Log.d(TAG, "The file does not exits")
                         val input = contentResolver.openInputStream(Uri.parse(path))
-                        val bitmap: Bitmap = BitmapFactory.decodeStream(input)
-                        val ratio = bitmap.height / bitmap.width
-
-                        Picasso.get().load(Uri.parse(path))
-                                .resize((600 * ratio), (500 * ratio))
+                        val bitmap = BitmapFactory.decodeStream(input)
+                        val ratio: Float = if (bitmap.height > bitmap.width) (bitmap.height / bitmap.width).toFloat()
+                        else (bitmap.width / bitmap.height).toFloat()
+                        Log.d(TAG, "The ratio is $ratio")
+                        Log.d(TAG, "The height is ${bitmap.height}")
+                        Log.d(TAG, "The width is ${bitmap.width}")
+                        //imageView.setImageBitmap(bitmap)
+                        Picasso.get().load(File(path))
+                                .resize((600 * ratio).toInt(), (400 * ratio).toInt())
                                 .into(imageView)
 
                         imageView.setOnClickListener {
@@ -106,64 +109,65 @@ class EditActivity : AppCompatActivity() {
         const val TAG = "EditActivity"
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?) = when (item?.itemId) {
-        android.R.id.home -> {
-            val word = intent.getParcelableExtra<Word>(KEY_DATA)
-            if (selectedImages.isNotEmpty()) {
-                if (word?.paths == null)
-                    word?.paths = selectedImages
-                else
-                    word.paths += selectedImages
-            }
-            val intentBack = Intent()
-            intentBack.putExtra(KEY_ACTION, UPDATE)
-            intentBack.putExtra(KEY_DATA, word)
-            setResult(Activity.RESULT_OK, intentBack)
-            onBackPressed()
-            true
-        }
+    override fun onOptionsItemSelected(item: MenuItem?) =
+            when (item?.itemId) {
+                android.R.id.home -> {
+                    val word = intent.getParcelableExtra<Word>(KEY_DATA)
+                    if (selectedImages.isNotEmpty()) {
+                        if (word?.paths == null)
+                            word?.paths = selectedImages
+                        else
+                            word.paths += selectedImages
+                    }
+                    val intentBack = Intent()
+                    intentBack.putExtra(KEY_ACTION, UPDATE)
+                    intentBack.putExtra(KEY_DATA, word)
+                    setResult(Activity.RESULT_OK, intentBack)
+                    onBackPressed()
+                    true
+                }
 
-        R.id.doneMenuItem -> {
-            if (validate()) {
-                val word = wordEditTv.text.toString().trim()
-                val definition = definitionEditTv.text.toString().trim()
-                val intentBack = Intent()
-                val wordObject: Word
-                wordObject = if (selectedImages.isEmpty())
-                    Word(null, Date(), word, definition, null)
-                else
-                    Word(null, Date(), word, definition, selectedImages)
-                Log.d(TAG, "the word is $wordObject")
-                intentBack.putExtra(KEY_DATA, wordObject)
-                setResult(Activity.RESULT_OK, intentBack)
-                finish()
-            }
-            true
-        }
-
-        R.id.addPhotoMenuItem -> {
-            getPhotoFromGallery()
-            true
-        }
-
-        R.id.deleteMenuItem -> {
-            AlertDialog.Builder(this)
-                    .setTitle("Are you sure?")
-                    .setMessage("Delete this word for ever.")
-                    .setPositiveButton("Yes", { _, _ ->
+                R.id.doneMenuItem -> {
+                    if (validate()) {
+                        val word = wordEditTv.text.toString().trim()
+                        val definition = definitionEditTv.text.toString().trim()
                         val intentBack = Intent()
-                        intentBack.putExtra(KEY_ACTION, DELETE)
-                        intentBack.putExtra(KEY_DATA, intent.getParcelableExtra<Word>(KEY_DATA))
+                        val wordObject: Word
+                        wordObject = if (selectedImages.isEmpty())
+                            Word(null, Date(), word, definition, null)
+                        else
+                            Word(null, Date(), word, definition, selectedImages)
+                        Log.d(TAG, "the word is $wordObject")
+                        intentBack.putExtra(KEY_DATA, wordObject)
                         setResult(Activity.RESULT_OK, intentBack)
                         finish()
-                    })
-                    .setNegativeButton("Cancel", null)
-                    .show()
-            true
-        }
+                    }
+                    true
+                }
 
-        else -> false
-    }
+                R.id.addPhotoMenuItem -> {
+                    getPhotoFromGallery()
+                    true
+                }
+
+                R.id.deleteMenuItem -> {
+                    AlertDialog.Builder(this)
+                            .setTitle("Are you sure?")
+                            .setMessage("Delete this word for ever.")
+                            .setPositiveButton("Yes", { _, _ ->
+                                val intentBack = Intent()
+                                intentBack.putExtra(KEY_ACTION, DELETE)
+                                intentBack.putExtra(KEY_DATA, intent.getParcelableExtra<Word>(KEY_DATA))
+                                setResult(Activity.RESULT_OK, intentBack)
+                                finish()
+                            })
+                            .setNegativeButton("Cancel", null)
+                            .show()
+                    true
+                }
+
+                else -> false
+            }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         when (intent.getIntExtra(KEY_ACTION, 0)) {
