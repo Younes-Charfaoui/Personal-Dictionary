@@ -9,7 +9,7 @@ import com.mxcsyounes.presonaldictionary.database.repo.WordsListConstant
 
 class WordViewModel(application: Application) : AndroidViewModel(application) {
 
-    val words: LiveData<MutableList<Word>>
+    var words: LiveData<MutableList<Word>>?
     private val wordRepository = WordRepository(application)
 
     init {
@@ -24,5 +24,10 @@ class WordViewModel(application: Application) : AndroidViewModel(application) {
 
     fun deleteAll() = wordRepository.deleteAllWord()
 
-    fun getWordsWith(@WordsListConstant condition: Int) = wordRepository.getWordsWith(condition)
+    fun getWordsWith(@WordsListConstant condition: Int) {
+        words = this.wordRepository.getWordsWith(condition)
+
+    }
+
+
 }

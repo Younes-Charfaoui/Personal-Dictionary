@@ -13,4 +13,6 @@
     <string name="definition_empty_text_message">Definition must have a value.</string>
     <string name="empty_image_content_description">Empty image of books</string>
     <string name="photo">Photo</string>
+    <string name="sort_alphabetically">Sort Alphabetically</string>
+    <string name="sort_by_recent">Sort By Recent</string>
 </resources>

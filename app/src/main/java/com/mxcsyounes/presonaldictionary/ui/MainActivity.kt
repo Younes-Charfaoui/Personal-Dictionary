@@ -13,6 +13,9 @@ import android.view.MenuItem
 import android.view.View
 import com.mxcsyounes.presonaldictionary.R
 import com.mxcsyounes.presonaldictionary.database.entities.Word
+import com.mxcsyounes.presonaldictionary.database.repo.WORDS_ALPHA_ASC
+import com.mxcsyounes.presonaldictionary.database.repo.WORDS_ALPHA_DESC
+import com.mxcsyounes.presonaldictionary.database.repo.WORDS_DESC
 import com.mxcsyounes.presonaldictionary.ui.EditActivity.Companion.ACTION_DETAIL
 import com.mxcsyounes.presonaldictionary.ui.EditActivity.Companion.ACTION_NEW
 import com.mxcsyounes.presonaldictionary.ui.EditActivity.Companion.KEY_ACTION
@@ -32,27 +35,21 @@ class MainActivity : AppCompatActivity(), WordAdapter.OnWordItemsClickListener {
 
     }
 
+    var adapter: WordAdapter? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
         wordRecycler.layoutManager = LinearLayoutManager(this, VERTICAL, false)
-        val adapter = WordAdapter(this, this)
+
+        adapter = WordAdapter(this, this)
         wordRecycler.adapter = adapter
 
         mWordViewModel = ViewModelProviders.of(this).get(WordViewModel::class.java)
 
-        mWordViewModel?.words?.observe(this, android.arch.lifecycle.Observer {
-            if (it?.size == 0) {
-                emptyLayout.visibility = View.VISIBLE
-                wordRecycler.visibility = View.GONE
-            } else {
-                emptyLayout.visibility = View.GONE
-                wordRecycler.visibility = View.VISIBLE
-                adapter.swapWordList(it)
-            }
-        })
+        changeObserver()
 
         addWordFab.setOnClickListener {
             val intent = Intent(this, EditActivity::class.java)
@@ -67,12 +64,20 @@ class MainActivity : AppCompatActivity(), WordAdapter.OnWordItemsClickListener {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        return when (item.itemId) {
-            R.id.action_settings -> return true
-            else -> super.onOptionsItemSelected(item)
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.action_settings -> true
+        R.id.action_alphabet -> {
+            mWordViewModel?.getWordsWith(WORDS_ALPHA_ASC)
+            changeObserver()
+            true
         }
+        R.id.action_recent -> {
+            mWordViewModel?.getWordsWith(WORDS_DESC)
+            changeObserver()
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
+
     }
 
     override fun onWordItemClickListener(word: Word) {
@@ -80,6 +85,19 @@ class MainActivity : AppCompatActivity(), WordAdapter.OnWordItemsClickListener {
         intent.putExtra(KEY_ACTION, ACTION_DETAIL)
         intent.putExtra(KEY_DATA, word)
         startActivityForResult(intent, REQUEST_DETAIL_WORD)
+    }
+
+    private fun changeObserver() {
+        mWordViewModel?.words?.observe(this, android.arch.lifecycle.Observer {
+            if (it?.size == 0) {
+                emptyLayout.visibility = View.VISIBLE
+                wordRecycler.visibility = View.GONE
+            } else {
+                emptyLayout.visibility = View.GONE
+                wordRecycler.visibility = View.VISIBLE
+                adapter?.swapWordList(it)
+            }
+        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

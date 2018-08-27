@@ -21,13 +21,12 @@ annotation class WordsListConstant
 class WordRepository(application: Application) {
 
     private val wordDao: WordDao? = WordDatabase.getInstance(application, false)?.wordDao()
+    private val executor: ExecutorService = Executors.newSingleThreadExecutor()
     val allWords: LiveData<MutableList<Word>>
 
     init {
         allWords = wordDao?.getWordsASC()!!
     }
-
-    private val executor: ExecutorService = Executors.newSingleThreadExecutor()
 
     fun insertWord(word: Word) = executor.execute({ wordDao?.insertWord(word) })
 
@@ -37,14 +36,15 @@ class WordRepository(application: Application) {
 
     fun deleteAllWord() = executor.execute({ wordDao?.deleteAll() })
 
-    fun getWordsWith(@WordsListConstant condition: Int) {
+    fun getWordsWith(@WordsListConstant condition: Int) : LiveData<MutableList<Word>>? =
         when (condition) {
             WORDS_ASC -> wordDao?.getWordsASC()
             WORDS_DESC -> wordDao?.getWordsDESC()
             WORDS_ALPHA_ASC -> wordDao?.getWordsAlphabeticallyASC()
             WORDS_ALPHA_DESC -> wordDao?.getWordsAlphabeticallyDESC()
+            else -> wordDao?.getWordsASC()
         }
     }
 
-}
+
 
