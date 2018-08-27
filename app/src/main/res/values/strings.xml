@@ -8,7 +8,7 @@
     <string name="word">Word</string>
     <string name="done_menu_item">Done</string>
     <string name="delete_menu_item">Delete</string>
-    <string name="edit_menu_item">Edit</string>
+    <string name="add_photo_menu_item">Add Photo</string>
     <string name="word_empty_text_message">Word must have a value.</string>
     <string name="definition_empty_text_message">Definition must have a value.</string>
     <string name="empty_image_content_description">Empty image of books</string>

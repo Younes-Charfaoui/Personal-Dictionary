@@ -27,7 +27,7 @@ import java.util.*
 
 class EditActivity : AppCompatActivity() {
 
-    private var stateEdit = true
+    private var statePhoto = true
     private var selectedImages = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +44,7 @@ class EditActivity : AppCompatActivity() {
                 wordEditTv.isFocusable = false
                 definitionEditTv.isClickable = false
                 definitionEditTv.isFocusable = false
-                addPhotoButton.visibility = View.GONE
+                //addPhotoButton.visibility = View.GONE
 
                 if (word.paths != null) {
                     photoTitleTv.visibility = View.VISIBLE
@@ -84,10 +84,10 @@ class EditActivity : AppCompatActivity() {
             }
             ACTION_NEW -> {
                 photoTitleTv.visibility = View.GONE
-
-                addPhotoButton.setOnClickListener {
+                statePhoto = false
+                /*addPhotoButton.setOnClickListener {
                     getPhotoFromGallery()
-                }
+                }*/
             }
             else -> finish()
         }
@@ -104,6 +104,7 @@ class EditActivity : AppCompatActivity() {
         const val TAG = "EditActivity"
         const val UPDATE = 112
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem?) = when (item?.itemId) {
         android.R.id.home -> {
@@ -128,37 +129,10 @@ class EditActivity : AppCompatActivity() {
             true
         }
 
-//        R.id.editMenuItem -> {
-//            if (stateEdit) {
-//                item.icon = ContextCompat.getDrawable(this, R.drawable.ic_done_white_24dp)
-//                stateEdit = false
-//                wordEditTv.isEnabled = true
-//                definitionEditTv.isEnabled = true
-//            } else {
-//                if (validate()) {
-//                    AlertDialog.Builder(this)
-//                            .setTitle("Are you sure?")
-//                            .setMessage("Keep changes an update word.")
-//                            .setPositiveButton("Yes", { _, _ ->
-//                                val word = wordEditTv.text.toString().trim()
-//                                val definition = definitionEditTv.text.toString().trim()
-//                                val wordU = intent.getParcelableExtra<Word>(KEY_DATA)
-//                                wordU.word = word
-//                                wordU.definition = definition
-//                                wordU.date = Date()
-//                                val intentBack = Intent()
-//                                intentBack.putExtra(KEY_ACTION, UPDATE)
-//                                intentBack.putExtra(KEY_DATA, wordU)
-//                                setResult(Activity.RESULT_OK, intentBack)
-//                                finish()
-//                            })
-//                            .setNegativeButton("Cancel", null)
-//                            .show()
-//                }
-//            }
-//
-//            true
-//        }
+        R.id.addPhotoMenuItem -> {
+            getPhotoFromGallery()
+            true
+        }
 
         R.id.deleteMenuItem -> {
             AlertDialog.Builder(this)
@@ -220,7 +194,17 @@ class EditActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_PHOTO && resultCode == Activity.RESULT_OK) {
             val image = data?.data
-            selectedImages += "${image.toString()};"
+
+            when (intent.getIntExtra(KEY_ACTION, 0)) {
+
+                ACTION_NEW -> {
+                    selectedImages += "${image.toString()};"
+                }
+                ACTION_DETAIL -> {
+                    selectedImages += "${image.toString()};"
+                }
+            }
+
         }
         super.onActivityResult(requestCode, resultCode, data)
     }

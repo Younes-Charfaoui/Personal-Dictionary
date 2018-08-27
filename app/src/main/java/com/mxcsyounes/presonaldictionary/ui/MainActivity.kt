@@ -27,15 +27,13 @@ import kotlinx.android.synthetic.main.content_main.*
 class MainActivity : AppCompatActivity(), WordAdapter.OnWordItemsClickListener {
 
     private var mWordViewModel: WordViewModel? = null
+    private var adapter: WordAdapter? = null
 
     companion object {
         const val REQUEST_NEW_WORD = 1224
         const val REQUEST_DETAIL_WORD = 1225
         const val TAG = "MainActivity"
-
     }
-
-    var adapter: WordAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,6 +110,7 @@ class MainActivity : AppCompatActivity(), WordAdapter.OnWordItemsClickListener {
             }
             REQUEST_DETAIL_WORD -> {
                 if (resultCode == Activity.RESULT_OK) {
+
                     val word = data?.getParcelableExtra<Word>(KEY_DATA)
                     mWordViewModel?.deleteWord(word!!)
                 }
