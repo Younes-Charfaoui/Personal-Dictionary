@@ -1,9 +1,6 @@
 package com.mxcsyounes.presonaldictionary.database.entities
 
-import android.arch.persistence.room.ColumnInfo
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
-import android.arch.persistence.room.TypeConverters
+import android.arch.persistence.room.*
 import android.os.Parcel
 import android.os.Parcelable
 import com.mxcsyounes.presonaldictionary.database.converters.DateConverter
@@ -17,7 +14,7 @@ data class Word(@PrimaryKey(autoGenerate = true) var id: Int?,
                 var definition: String,
                 var paths: String?) : Parcelable {
 
-
+    @Ignore
     constructor(parcel: Parcel) : this(
             parcel.readValue(Int::class.java.classLoader) as? Int,
             Date(parcel.readLong()),

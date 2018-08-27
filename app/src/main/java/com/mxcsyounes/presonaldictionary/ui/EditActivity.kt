@@ -109,9 +109,12 @@ class EditActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?) = when (item?.itemId) {
         android.R.id.home -> {
             val word = intent.getParcelableExtra<Word>(KEY_DATA)
-//            if (selectedImages.isNotEmpty()) {
-//                word?.paths += selectedImages
-//            }
+            if (selectedImages.isNotEmpty()) {
+                if (word?.paths == null)
+                    word?.paths = selectedImages
+                else
+                    word.paths += selectedImages
+            }
             val intentBack = Intent()
             intentBack.putExtra(KEY_ACTION, UPDATE)
             intentBack.putExtra(KEY_DATA, word)
