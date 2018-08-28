@@ -16,6 +16,7 @@ import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.LinearLayout
+import com.bumptech.glide.Glide
 import com.mxcsyounes.presonaldictionary.R
 import com.mxcsyounes.presonaldictionary.database.entities.Word
 import com.squareup.picasso.Picasso
@@ -54,26 +55,27 @@ class EditActivity : AppCompatActivity() {
                         if (path.trim().isEmpty()) break
                         Log.d(TAG, "the path is $path")
                         val imageView = ImageView(this)
-                        val params = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                        val params = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0,1.0f)
+
 
                         params.setMargins(0, 8, 0, 8)
                         params.gravity = Gravity.CENTER_HORIZONTAL
                         imageView.layoutParams = params
 
-                        val file = File(path)
-                        if (file.exists()) Log.d(TAG, "The file exits")
-                        else Log.d(TAG, "The file does not exits")
-                        val input = contentResolver.openInputStream(Uri.parse(path))
-                        val bitmap = BitmapFactory.decodeStream(input)
-                        val ratio: Float = if (bitmap.height > bitmap.width) (bitmap.height / bitmap.width).toFloat()
-                        else (bitmap.width / bitmap.height).toFloat()
-                        Log.d(TAG, "The ratio is $ratio")
-                        Log.d(TAG, "The height is ${bitmap.height}")
-                        Log.d(TAG, "The width is ${bitmap.width}")
+//                        val file = File(path)
+//                        if (file.exists()) Log.d(TAG, "The file exits")
+//                        else Log.d(TAG, "The file does not exits")
+//                        val input = contentResolver.openInputStream(Uri.parse(path))
+//                        val bitmap = BitmapFactory.decodeStream(input)
+//                        val ratio: Float = if (bitmap.height > bitmap.width) (bitmap.height / bitmap.width).toFloat()
+//                        else (bitmap.width / bitmap.height).toFloat()
+//                        Log.d(TAG, "The ratio is $ratio")
+//                        Log.d(TAG, "The height is ${bitmap.height}")
+//                        Log.d(TAG, "The width is ${bitmap.width}")
                         //imageView.setImageBitmap(bitmap)
-                        Picasso.get().load(File(path))
-                                .resize((600 * ratio).toInt(), (400 * ratio).toInt())
-                                .into(imageView)
+
+                        Glide.with(this).load(Uri.parse(path)).into(imageView)
+
 
                         imageView.setOnClickListener {
                             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(path)))
