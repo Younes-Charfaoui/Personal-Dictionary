@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -13,16 +12,18 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.view.*
+import android.view.Gravity
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import android.widget.LinearLayout
 import com.bumptech.glide.Glide
 import com.mxcsyounes.presonaldictionary.R
 import com.mxcsyounes.presonaldictionary.database.entities.Word
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_edit.*
 import kotlinx.android.synthetic.main.content_edit.*
-import java.io.File
 import java.util.*
 
 class EditActivity : AppCompatActivity() {
@@ -55,12 +56,14 @@ class EditActivity : AppCompatActivity() {
                         if (path.trim().isEmpty()) break
                         Log.d(TAG, "the path is $path")
                         val imageView = ImageView(this)
-                        val params = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0,1.0f)
+                        val params = LinearLayout.LayoutParams(WRAP_CONTENT, 0)
+                        params.weight = 1f
 
 
                         params.setMargins(0, 8, 0, 8)
                         params.gravity = Gravity.CENTER_HORIZONTAL
                         imageView.layoutParams = params
+                        imageView.scaleType = ImageView.ScaleType.FIT_CENTER
 
 //                        val file = File(path)
 //                        if (file.exists()) Log.d(TAG, "The file exits")
@@ -74,14 +77,14 @@ class EditActivity : AppCompatActivity() {
 //                        Log.d(TAG, "The width is ${bitmap.width}")
                         //imageView.setImageBitmap(bitmap)
 
-                        Glide.with(this).load(Uri.parse(path)).into(imageView)
-
 
                         imageView.setOnClickListener {
                             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(path)))
                         }
 
                         photoLayout.addView(imageView)
+
+                        Glide.with(this).load(Uri.parse(path)).into(imageView)
                     }
                 } else
                     photoTitleTv.visibility = View.GONE

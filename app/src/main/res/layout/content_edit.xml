@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".ui.EditActivity"
@@ -13,6 +14,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fillViewport="true"
         android:padding="24dp">
 
 
@@ -76,7 +78,18 @@
             android:layout_height="match_parent"
             android:layout_marginTop="8dp"
             android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@+id/photoTitleTv" />
+            android:gravity="top"
+            app:layout_constraintTop_toBottomOf="@+id/photoTitleTv" >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:src="@drawable/image"
+                android:scaleType="fitCenter"
+                />
+
+        </LinearLayout>
 
         <!--<Button-->
             <!--android:id="@+id/addPhotoButton"-->

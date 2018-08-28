@@ -8,4 +8,11 @@
         android:orderInCategory="100"
         android:title="@string/done_menu_item"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/addPhotoMenuItem"
+        android:icon="@drawable/ic_add_a_photo_white_24dp"
+        android:orderInCategory="101"
+        android:title="@string/add_photo_menu_item"
+        app:showAsAction="ifRoom" />
 </menu>
