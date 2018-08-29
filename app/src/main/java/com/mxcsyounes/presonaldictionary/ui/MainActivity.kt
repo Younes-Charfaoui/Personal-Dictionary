@@ -57,8 +57,6 @@ class MainActivity : AppCompatActivity(), WordAdapter.OnWordItemsClickListener {
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
 
-        R.id.action_settings -> true
-
         R.id.action_alphabet -> {
             mWordViewModel?.getWordsWith(WORDS_ALPHA_ASC)
             changeObserver()
