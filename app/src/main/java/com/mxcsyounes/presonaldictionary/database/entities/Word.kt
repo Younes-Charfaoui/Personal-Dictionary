@@ -22,7 +22,6 @@ data class Word(@PrimaryKey(autoGenerate = true) var id: Int?,
             parcel.readString(),
             parcel.readString())
 
-
     constructor() : this(null, null, "", "" , "")
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -46,6 +45,5 @@ data class Word(@PrimaryKey(autoGenerate = true) var id: Int?,
             return arrayOfNulls(size)
         }
     }
-
 
 }

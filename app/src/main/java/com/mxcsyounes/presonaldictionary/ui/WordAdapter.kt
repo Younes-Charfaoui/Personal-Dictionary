@@ -11,11 +11,8 @@ import com.mxcsyounes.presonaldictionary.R
 import com.mxcsyounes.presonaldictionary.database.entities.Word
 import kotlinx.android.synthetic.main.word_list_item.view.*
 
-class WordAdapter(context: Context, onWordItemsClickListener: OnWordItemsClickListener) : RecyclerView.Adapter<WordAdapter.WordViewHolder>() {
-
-    companion object {
-        const val TAG = "WordAdapter"
-    }
+class WordAdapter(context: Context, onWordItemsClickListener: OnWordItemsClickListener)
+    : RecyclerView.Adapter<WordAdapter.WordViewHolder>() {
 
     var wordList: MutableList<Word>? = null
     private val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -51,6 +48,9 @@ class WordAdapter(context: Context, onWordItemsClickListener: OnWordItemsClickLi
         }
     }
 
+    companion object {
+        const val TAG = "WordAdapter"
+    }
 
     interface OnWordItemsClickListener {
         fun onWordItemClickListener(word: Word)

@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -79,27 +77,7 @@
             android:layout_marginTop="8dp"
             android:orientation="vertical"
             android:gravity="top"
-            app:layout_constraintTop_toBottomOf="@+id/photoTitleTv" >
+            app:layout_constraintTop_toBottomOf="@+id/photoTitleTv" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:src="@drawable/image"
-                android:scaleType="fitCenter"
-                />
-
-        </LinearLayout>
-
-        <!--<Button-->
-            <!--android:id="@+id/addPhotoButton"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginEnd="8dp"-->
-            <!--android:layout_marginTop="16dp"-->
-            <!--android:backgroundTint="@color/colorAccent"-->
-            <!--android:text="Add Photo"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/definitionInput" />-->
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

@@ -34,8 +34,6 @@ class WordRepository(application: Application) {
 
     fun deleteWord(word: Word) = executor.execute({ wordDao?.deleteWord(word) })
 
-    fun deleteAllWord() = executor.execute({ wordDao?.deleteAll() })
-
     fun getWordsWith(@WordsListConstant condition: Int) : LiveData<MutableList<Word>>? =
         when (condition) {
             WORDS_ASC -> wordDao?.getWordsASC()

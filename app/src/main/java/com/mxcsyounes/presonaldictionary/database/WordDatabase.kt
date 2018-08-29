@@ -14,18 +14,17 @@ import com.mxcsyounes.presonaldictionary.database.entities.Word
 abstract class WordDatabase : RoomDatabase() {
 
     companion object {
-        const val DB_NAME = "words.db"
-
+        private const val DB_NAME = "words.db"
         private var sInstance: WordDatabase? = null
 
         fun getInstance(context: Context, inMemory: Boolean): WordDatabase? {
             if (sInstance == null)
-                if (!inMemory) {
-                    sInstance = Room.databaseBuilder(context,
+                sInstance = if (!inMemory) {
+                    Room.databaseBuilder(context,
                             WordDatabase::class.java,
                             DB_NAME).build()
                 } else {
-                    sInstance = Room.inMemoryDatabaseBuilder(context, WordDatabase::class.java)
+                    Room.inMemoryDatabaseBuilder(context, WordDatabase::class.java)
                             .build()
                 }
             return sInstance
@@ -33,5 +32,4 @@ abstract class WordDatabase : RoomDatabase() {
     }
 
     abstract fun wordDao() : WordDao
-
 }

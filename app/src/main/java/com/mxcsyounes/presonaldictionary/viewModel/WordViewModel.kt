@@ -22,12 +22,8 @@ class WordViewModel(application: Application) : AndroidViewModel(application) {
 
     fun updateWord(word: Word) = wordRepository.updateWord(word)
 
-    fun deleteAll() = wordRepository.deleteAllWord()
-
     fun getWordsWith(@WordsListConstant condition: Int) {
         words = this.wordRepository.getWordsWith(condition)
-
     }
-
 
 }
