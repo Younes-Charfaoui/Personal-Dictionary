@@ -6,15 +6,51 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.TextView
 import com.mxcsyounes.presonaldictionary.R
 import com.mxcsyounes.presonaldictionary.database.entities.Word
 import kotlinx.android.synthetic.main.word_list_item.view.*
 
 class WordAdapter(context: Context, onWordItemsClickListener: OnWordItemsClickListener)
-    : RecyclerView.Adapter<WordAdapter.WordViewHolder>() {
+    : RecyclerView.Adapter<WordAdapter.WordViewHolder>(), Filterable {
+
+
+    override fun getFilter(): Filter {
+
+        return object : Filter() {
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+
+                val keyword = constraint?.toString()
+                if (keyword?.isEmpty()!!) {
+                    wordListFiltered = wordList
+                } else {
+                    val filteredList = mutableListOf<Word>()
+                    for (word in this.wordList) {
+                        if (word?.) {
+                            filteredList.add(word)
+                        }
+                    }
+                    wordListFiltered = filteredList
+                }
+
+                val result = FilterResults()
+                result.values = wordListFiltered
+                return result
+            }
+
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                wordList = results?.values as MutableList<*>
+                notifyDataSetChanged()
+            }
+
+        }
+
+    }
 
     var wordList: MutableList<Word>? = null
+    var wordListFiltered: MutableList<Word>? = null
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private val listener = onWordItemsClickListener
 
@@ -47,6 +83,7 @@ class WordAdapter(context: Context, onWordItemsClickListener: OnWordItemsClickLi
             }
         }
     }
+
 
     companion object {
         const val TAG = "WordAdapter"
