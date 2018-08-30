@@ -16,15 +16,12 @@ import kotlinx.android.synthetic.main.word_list_item.view.*
 class WordAdapter(context: Context, onWordItemsClickListener: OnWordItemsClickListener)
     : RecyclerView.Adapter<WordAdapter.WordViewHolder>(), Filterable {
 
-
     override fun getFilter(): Filter {
 
         return object : Filter() {
 
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val keyword = constraint?.toString()
-
-                Log.i(TAG , "The prefrm was launche")
 
                 wordListFiltered = if (keyword?.isEmpty()!!) {
                     wordList!!
@@ -45,8 +42,6 @@ class WordAdapter(context: Context, onWordItemsClickListener: OnWordItemsClickLi
             }
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                Log.i(TAG , "The publishResults was launche")
-
                 notifyDataSetChanged()
             }
         }
@@ -86,10 +81,6 @@ class WordAdapter(context: Context, onWordItemsClickListener: OnWordItemsClickLi
                 listener.onWordItemClickListener(wordListFiltered!![adapterPosition])
             }
         }
-    }
-
-    fun resetTheList() {
-        this.wordListFiltered = this.wordList
     }
 
     companion object {

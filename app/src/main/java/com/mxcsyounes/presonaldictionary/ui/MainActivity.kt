@@ -105,8 +105,6 @@ class MainActivity : AppCompatActivity(), WordAdapter.OnWordItemsClickListener {
         val intent = Intent(this, EditActivity::class.java)
         intent.putExtra(KEY_ACTION, ACTION_DETAIL)
         intent.putExtra(KEY_DATA, word)
-        if (searchView?.query?.isNotEmpty()!!)
-            mWordViewModel?.currentSearch = searchView?.query.toString()
         startActivityForResult(intent, REQUEST_DETAIL_WORD)
     }
 

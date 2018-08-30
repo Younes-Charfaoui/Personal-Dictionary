@@ -65,5 +65,4 @@ class WordDatabaseTest {
     fun close() {
         database?.close()
     }
-
 }
