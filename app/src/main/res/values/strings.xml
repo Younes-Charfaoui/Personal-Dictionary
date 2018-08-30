@@ -20,4 +20,5 @@
     <string name="delete_dialog_message">Delete this word for ever.</string>
     <string name="yes_sting">Yes</string>
     <string name="cancel">Cancel</string>
+    <string name="search">Search</string>
 </resources>

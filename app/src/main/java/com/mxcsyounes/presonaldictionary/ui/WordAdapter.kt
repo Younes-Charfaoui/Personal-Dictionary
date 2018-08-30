@@ -22,26 +22,32 @@ class WordAdapter(context: Context, onWordItemsClickListener: OnWordItemsClickLi
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
 
+                wordListFiltered.clear()
+
                 val keyword = constraint?.toString()
-                if (keyword?.isEmpty()!!) {
-                    wordListFiltered = wordList
+                wordListFiltered = if (keyword?.isEmpty()!!) {
+                    wordList!!
                 } else {
                     val filteredList = mutableListOf<Word>()
-                    for (word in this.wordList) {
-                        if (word?.) {
-                            filteredList.add(word)
-                        }
+
+                    wordList?.forEach {
+                        if (it.word.contains(keyword) || it.definition.contains(keyword))
+                            filteredList.add(it)
                     }
-                    wordListFiltered = filteredList
+                    filteredList
                 }
 
-                val result = FilterResults()
-                result.values = wordListFiltered
-                return result
+                return FilterResults().apply {
+                    values = wordListFiltered
+                    count = wordListFiltered.size
+                }
             }
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                wordList = results?.values as MutableList<*>
+                wordListFiltered.clear()
+                @Suppress("UNCHECKED_CAST")
+                if (results != null)
+                    wordListFiltered.addAll(results.values as MutableList<Word>)
                 notifyDataSetChanged()
             }
 
@@ -50,7 +56,7 @@ class WordAdapter(context: Context, onWordItemsClickListener: OnWordItemsClickLi
     }
 
     var wordList: MutableList<Word>? = null
-    var wordListFiltered: MutableList<Word>? = null
+    var wordListFiltered: MutableList<Word> = mutableListOf()
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private val listener = onWordItemsClickListener
 

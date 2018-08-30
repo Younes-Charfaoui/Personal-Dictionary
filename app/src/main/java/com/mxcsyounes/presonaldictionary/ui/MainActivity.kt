@@ -1,12 +1,15 @@
 package com.mxcsyounes.presonaldictionary.ui
 
 import android.app.Activity
+import android.app.SearchManager
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.LinearLayoutManager.VERTICAL
+import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -50,8 +53,31 @@ class MainActivity : AppCompatActivity(), WordAdapter.OnWordItemsClickListener {
         }
     }
 
+    private var searchView: SearchView? = null
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
+
+        val searchManager: SearchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        searchView = menu.findItem(R.id.action_search).actionView as SearchView
+
+        searchView?.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+
+        searchView?.maxWidth = Int.MAX_VALUE
+
+
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                adapter?.filter?.filter(query)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter?.filter?.filter(newText)
+                return false
+            }
+
+        })
+
         return true
     }
 
@@ -68,6 +94,8 @@ class MainActivity : AppCompatActivity(), WordAdapter.OnWordItemsClickListener {
             changeObserver()
             true
         }
+
+        R.id.action_search -> true
 
         else -> super.onOptionsItemSelected(item)
 
@@ -94,7 +122,7 @@ class MainActivity : AppCompatActivity(), WordAdapter.OnWordItemsClickListener {
             REQUEST_DETAIL_WORD -> {
                 if (resultCode == Activity.RESULT_OK) {
                     val word = data?.getParcelableExtra<Word>(KEY_DATA)
-                    when(data?.getIntExtra(KEY_ACTION,0)){
+                    when (data?.getIntExtra(KEY_ACTION, 0)) {
                         DELETE -> mWordViewModel?.deleteWord(word!!)
                         UPDATE -> mWordViewModel?.updateWord(word!!)
                     }
@@ -121,6 +149,13 @@ class MainActivity : AppCompatActivity(), WordAdapter.OnWordItemsClickListener {
                 adapter?.swapWordList(it)
             }
         })
+    }
+
+    override fun onBackPressed() {
+        if (!searchView?.isIconified!!) {
+            searchView?.isIconified = true
+        }
+        super.onBackPressed()
     }
 }
 
