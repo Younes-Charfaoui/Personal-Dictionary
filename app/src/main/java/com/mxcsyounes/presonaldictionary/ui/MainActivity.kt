@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.LinearLayoutManager.VERTICAL
 import android.support.v7.widget.SearchView
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -68,11 +69,13 @@ class MainActivity : AppCompatActivity(), WordAdapter.OnWordItemsClickListener {
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 adapter?.filter?.filter(query)
+                Log.i(TAG , "$query")
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 adapter?.filter?.filter(newText)
+                Log.i(TAG , "$newText")
                 return false
             }
 
@@ -136,6 +139,7 @@ class MainActivity : AppCompatActivity(), WordAdapter.OnWordItemsClickListener {
     companion object {
         const val REQUEST_NEW_WORD = 1224
         const val REQUEST_DETAIL_WORD = 1225
+        const val TAG = "MainActivity"
     }
 
     private fun changeObserver() {
