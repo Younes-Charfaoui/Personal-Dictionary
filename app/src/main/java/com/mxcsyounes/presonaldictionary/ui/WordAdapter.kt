@@ -21,23 +21,20 @@ class WordAdapter(context: Context, onWordItemsClickListener: OnWordItemsClickLi
 
         return object : Filter() {
 
-            val filteredList = mutableListOf<Word>()
-
             override fun performFiltering(constraint: CharSequence?): FilterResults {
-                Log.i(TAG, "The prefom filtering was launched")
                 val keyword = constraint?.toString()
+
+                Log.i(TAG , "The prefrm was launche")
+
                 wordListFiltered = if (keyword?.isEmpty()!!) {
-                    Log.i(TAG, "The key word was empty")
                     wordList!!
                 } else {
-
+                    val filteredList = mutableListOf<Word>()
 
                     wordList?.forEach {
                         if (it.word.contains(keyword))
                             filteredList.add(it)
                     }
-                    Log.i(TAG, "the size of filtered list is : ${filteredList.size}")
-                    Log.i(TAG, "Here is the filtered list : $filteredList")
                     filteredList
                 }
 
@@ -48,17 +45,10 @@ class WordAdapter(context: Context, onWordItemsClickListener: OnWordItemsClickLi
             }
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                Log.i(TAG, "The publishResults was launched")
-                Log.i(TAG, "The count if ${results?.count}")
-//                wordListFiltered?.clear()
-//                @Suppress("UNCHECKED_CAST")
-//                if (results != null)
-//                    wordListFiltered?.addAll(results.values as MutableList<Word>)
+                Log.i(TAG , "The publishResults was launche")
 
-                Log.i(TAG, "The final result is ${wordListFiltered?.toString()}")
                 notifyDataSetChanged()
             }
-
         }
 
     }
@@ -77,7 +67,6 @@ class WordAdapter(context: Context, onWordItemsClickListener: OnWordItemsClickLi
 
     override fun onBindViewHolder(holder: WordViewHolder, position: Int) {
         val word = wordListFiltered?.get(position)
-        Log.d(TAG, "the word is ${word?.toString()}")
         holder.wordTv.text = word?.word
         holder.definitionTv.text = word?.definition
     }
@@ -94,7 +83,7 @@ class WordAdapter(context: Context, onWordItemsClickListener: OnWordItemsClickLi
 
         init {
             view.setOnClickListener {
-                listener.onWordItemClickListener(wordList!![adapterPosition])
+                listener.onWordItemClickListener(wordListFiltered!![adapterPosition])
             }
         }
     }

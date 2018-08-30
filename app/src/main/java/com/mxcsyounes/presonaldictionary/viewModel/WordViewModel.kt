@@ -11,6 +11,7 @@ class WordViewModel(application: Application) : AndroidViewModel(application) {
 
     var words: LiveData<MutableList<Word>>?
     private val wordRepository = WordRepository(application)
+    var currentSearch = ""
 
     init {
         words = wordRepository.allWords

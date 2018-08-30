@@ -69,13 +69,11 @@ class MainActivity : AppCompatActivity(), WordAdapter.OnWordItemsClickListener {
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 adapter?.filter?.filter(query)
-                Log.i(TAG , "$query")
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 adapter?.filter?.filter(newText)
-                Log.i(TAG , "$newText")
                 return false
             }
 
@@ -108,6 +106,8 @@ class MainActivity : AppCompatActivity(), WordAdapter.OnWordItemsClickListener {
         val intent = Intent(this, EditActivity::class.java)
         intent.putExtra(KEY_ACTION, ACTION_DETAIL)
         intent.putExtra(KEY_DATA, word)
+        if (searchView?.query?.isNotEmpty()!!)
+            mWordViewModel?.currentSearch = searchView?.query.toString()
         startActivityForResult(intent, REQUEST_DETAIL_WORD)
     }
 
@@ -130,10 +130,8 @@ class MainActivity : AppCompatActivity(), WordAdapter.OnWordItemsClickListener {
                         UPDATE -> mWordViewModel?.updateWord(word!!)
                     }
                 }
-
             }
         }
-
     }
 
     companion object {
@@ -160,6 +158,12 @@ class MainActivity : AppCompatActivity(), WordAdapter.OnWordItemsClickListener {
             searchView?.isIconified = true
         }
         super.onBackPressed()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        searchView?.setQuery(searchView?.query , true)
+
     }
 }
 
