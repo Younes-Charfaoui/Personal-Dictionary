@@ -43,6 +43,11 @@ class EditActivity : AppCompatActivity() {
                 editToolbar.title = getString(R.string.detail)
                 definitionEditTv.setText(word.definition)
 
+                wordEditTv.isFocusable = false
+                wordEditTv.isClickable = false
+                definitionEditTv.isFocusable = false
+                definitionEditTv.isClickable = false
+
                 if (word.paths != null) {
                     photoTitleTv.visibility = View.VISIBLE
 
@@ -121,6 +126,14 @@ class EditActivity : AppCompatActivity() {
                             })
                             .setNegativeButton(getString(R.string.cancel), null)
                             .show()
+                    true
+                }
+
+                R.id.editMenuItem -> {
+                    wordEditTv.isFocusableInTouchMode = true
+                    wordEditTv.isClickable = true
+                    definitionEditTv.isFocusableInTouchMode = true
+                    definitionEditTv.isClickable = true
                     true
                 }
 

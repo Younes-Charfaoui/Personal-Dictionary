@@ -14,4 +14,11 @@
         android:orderInCategory="101"
         android:title="@string/add_photo_menu_item"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/editMenuItem"
+        android:orderInCategory="102"
+        android:title="Edit word"
+        app:showAsAction="never" />
+
 </menu>
