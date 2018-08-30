@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.LinearLayoutManager.VERTICAL
 import android.support.v7.widget.SearchView
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -119,11 +118,15 @@ class MainActivity : AppCompatActivity(), WordAdapter.OnWordItemsClickListener {
                 if (resultCode == Activity.RESULT_OK) {
                     val word = data?.getParcelableExtra<Word>(KEY_DATA)
                     mWordViewModel?.insertWord(word!!)
+                    searchView?.setQuery("", false)
+                    searchView?.isIconified = true
                 }
             }
 
             REQUEST_DETAIL_WORD -> {
                 if (resultCode == Activity.RESULT_OK) {
+                    searchView?.setQuery("", false)
+                    searchView?.isIconified = true
                     val word = data?.getParcelableExtra<Word>(KEY_DATA)
                     when (data?.getIntExtra(KEY_ACTION, 0)) {
                         DELETE -> mWordViewModel?.deleteWord(word!!)
@@ -162,7 +165,7 @@ class MainActivity : AppCompatActivity(), WordAdapter.OnWordItemsClickListener {
 
     override fun onResume() {
         super.onResume()
-        searchView?.setQuery(searchView?.query , true)
+        searchView?.setQuery(searchView?.query, true)
 
     }
 }

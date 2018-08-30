@@ -42,11 +42,6 @@ class EditActivity : AppCompatActivity() {
                 wordEditTv.setText(word.word)
                 editToolbar.title = getString(R.string.detail)
                 definitionEditTv.setText(word.definition)
-                wordEditTv.isClickable = false
-                wordEditTv.isFocusable = false
-                definitionEditTv.isClickable = false
-                definitionEditTv.isFocusable = false
-                //addPhotoButton.visibility = View.GONE
 
                 if (word.paths != null) {
                     photoTitleTv.visibility = View.VISIBLE
@@ -87,17 +82,6 @@ class EditActivity : AppCompatActivity() {
             when (item?.itemId) {
 
                 android.R.id.home -> {
-                    if (selectedImages.isNotEmpty()) {
-                        val word = intent.getParcelableExtra<Word>(KEY_DATA)
-                        if (word?.paths == null)
-                            word?.paths = selectedImages
-                        else
-                            word.paths += selectedImages
-                        val intentBack = Intent()
-                        intentBack.putExtra(KEY_ACTION, UPDATE)
-                        intentBack.putExtra(KEY_DATA, word)
-                        setResult(Activity.RESULT_OK, intentBack)
-                    }
                     onBackPressed()
                     true
                 }
@@ -198,4 +182,34 @@ class EditActivity : AppCompatActivity() {
         const val UPDATE = 112
     }
 
+
+    override fun onBackPressed() {
+        var changed = false
+        val word = intent.getParcelableExtra<Word>(KEY_DATA)
+        if (word?.definition != definitionEditTv.text.toString()) {
+            word?.definition = definitionEditTv.text.toString()
+            changed = true
+        }
+        if (word?.word != wordEditTv.text.toString()) {
+            word?.word = wordEditTv.text.toString()
+            changed = true
+        }
+        if (selectedImages.isNotEmpty()) {
+            if (word?.paths == null)
+                word?.paths = selectedImages
+            else
+                word.paths += selectedImages
+            changed = true
+        }
+
+        if (changed) {
+            val intentBack = Intent()
+            intentBack.putExtra(KEY_ACTION, UPDATE)
+            intentBack.putExtra(KEY_DATA, word)
+            setResult(Activity.RESULT_OK, intentBack)
+            finish()
+        }
+
+        super.onBackPressed()
+    }
 }
